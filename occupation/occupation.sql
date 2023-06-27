@@ -1,0 +1,5 @@
+SELECT CASE WHEN MAX(CASE WHEN Occupation = 'Doctor' THEN Name ELSE NULL END) IS NULL THEN 'NULL' ELSE MAX(CASE WHEN Occupation = 'Doctor' THEN Name ELSE NULL END) END AS Doctor, 
+CASE WHEN MAX(CASE WHEN Occupation = 'Professor' THEN Name ELSE NULL END) IS NULL THEN 'NULL' ELSE MAX(CASE WHEN Occupation = 'Professor' THEN Name ELSE NULL END) END AS Professor, 
+CASE WHEN MAX(CASE WHEN Occupation = 'Singer' THEN Name ELSE NULL END) IS NULL THEN 'NULL' ELSE MAX(CASE WHEN Occupation = 'Singer' THEN Name ELSE NULL END) END AS Singer, 
+CASE WHEN MAX(CASE WHEN Occupation = 'Actor' THEN Name ELSE NULL END) IS NULL THEN 'NULL' ELSE MAX(CASE WHEN Occupation = 'Actor' THEN Name ELSE NULL END) END AS Actor 
+FROM ( SELECT ROW_NUMBER() OVER (PARTITION BY Occupation ORDER BY Name) AS RowNumber, Name, Occupation FROM OCCUPATIONS ) AS sorted_occupations GROUP BY RowNumber ORDER BY RowNumber;
